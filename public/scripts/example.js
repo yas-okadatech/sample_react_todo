@@ -13,8 +13,27 @@ class Comment extends React.Component {
 }
 
 class CommentList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {comments: []}
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: "/api/comments",
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({comments: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  }
+
   render() {
-    let commentNodes = this.props.comments.map(comment => {
+    let commentNodes = this.state.comments.map(comment => {
       return (
         <Comment comment={comment} key={comment.id} />
       );
@@ -76,8 +95,8 @@ class CommentBox extends React.Component {
   }
 
   componentDidMount() {
-    this.loadCommentsFromServer()
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    //this.loadCommentsFromServer()
+    //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   }
 
   render() {
