@@ -1,16 +1,28 @@
 class Comment extends React.Component {
-  rawMarkup() {
-    let rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
-  }
-
+  // 説明用にシンプル化。sanitize すること！！！
   render() {
     return (
       <div className="comment">
         <h2 className="commentAuthor">
-          {this.props.author}
+          {this.props.comment.author}
         </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
+        {this.props.comment.text}
+      </div>
+    );
+  }
+}
+
+class CommentList extends React.Component {
+  render() {
+    let commentNodes = this.props.data.map(comment => {
+      return (
+        <Comment comment={comment} key={comment.id} />
+      );
+    });
+
+    return (
+      <div className="commentList">
+        {commentNodes}
       </div>
     );
   }
@@ -74,24 +86,6 @@ class CommentBox extends React.Component {
         <h1>Comments</h1>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
-      </div>
-    );
-  }
-}
-
-class CommentList extends React.Component {
-  render() {
-    let commentNodes = this.props.data.map(comment => {
-      return (
-        <Comment author={comment.author} key={comment.id}>
-          {comment.text}
-        </Comment>
-      );
-    });
-
-    return (
-      <div className="commentList">
-        {commentNodes}
       </div>
     );
   }
