@@ -14,7 +14,7 @@ class Comment extends React.Component {
 
 class CommentList extends React.Component {
   render() {
-    let commentNodes = this.props.data.map(comment => {
+    let commentNodes = this.props.comments.map(comment => {
       return (
         <Comment comment={comment} key={comment.id} />
       );
@@ -84,7 +84,7 @@ class CommentBox extends React.Component {
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList data={this.state.data} />
+        <CommentList comments={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
